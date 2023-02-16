@@ -1,0 +1,22 @@
+{
+  "type": "module",
+  "private": true,
+  "workspaces": [
+    "server",
+    "client",
+    "e2e"
+  ],
+  "scripts": {
+    "build:client": "yarn workspace myGamingList-client build",
+    "dev": "yarn workspace myGamingList-server dev",
+    "dev:debug": "yarn workspace myGamingList-server dev:debug",
+    "heroku-postbuild": "yarn workspace myGamingList-client build",
+    "start": "yarn workspace myGamingList-server start",
+    "dev:cypress": "yarn workspace myGamingList-server dev:e2e",
+    "e2e:open": "yarn workspace myGamingList-e2e e2e:open",
+    "e2e:run": "yarn workspace myGamingList-e2e e2e:run"
+  },
+  "engines": {
+    "node": "^16.18"
+  }
+}
