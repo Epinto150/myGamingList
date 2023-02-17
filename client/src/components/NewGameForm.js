@@ -13,8 +13,9 @@ const NewGameForm = ({ addGame, errors }) => {
        title: '',
        progress: '',
        system: '',
-       description: ''
+       description: '',
    }
+
 
 
    const [newGame, setNewGame] = useState(emptyNewGame)
@@ -60,7 +61,7 @@ const NewGameForm = ({ addGame, errors }) => {
            <ErrorList errors={errors} />
           
            <label htmlFor="title">
-               Title: <input type="text" onChange={handleInputChange} value={newGame.title} />
+               Title: <input type="text" name="title" onChange={handleInputChange} value={newGame.title} />
            </label>
 
 
@@ -72,8 +73,8 @@ const NewGameForm = ({ addGame, errors }) => {
 
 
            <label htmlFor="system">
-               System: <select name="system" onChange={handleInputChange} value={newGame.progress}>
-                   {progressOptions}
+               System: <select name="system" onChange={handleInputChange} value={newGame.system}>
+                   {systemOptions}
                </select>
            </label>
 

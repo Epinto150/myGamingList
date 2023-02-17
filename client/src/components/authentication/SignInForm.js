@@ -3,19 +3,20 @@ import config from "../../config";
 import FormError from "../layout/FormError";
 
 const SignInForm = () => {
-  const [userPayload, setUserPayload] = useState({ email: "", password: "" });
+  const [userPayload, setUserPayload] = useState({ username: "", password: "" });
   const [shouldRedirect, setShouldRedirect] = useState(false);
   const [errors, setErrors] = useState({});
 
   const validateInput = (payload) => {
     setErrors({});
-    const { email, password } = payload;
+    const { username, password } = payload;
     const emailRegexp = config.validation.email.regexp;
     let newErrors = {};
-    if (!email.match(emailRegexp)) {
+    
+    if (username.trim() === "") {
       newErrors = {
         ...newErrors,
-        email: "is invalid",
+        username: "is required",
       };
     }
 
@@ -32,10 +33,13 @@ const SignInForm = () => {
   const onSubmit = async (event) => {
     event.preventDefault()
     validateInput(userPayload)
+
+    console.log(userPayload)
+    console.log(Object.keys(errors))
     try {
       if (Object.keys(errors).length === 0) {
         const response = await fetch("/api/v1/user-sessions", {
-          method: "post",
+          method: "POST",
           body: JSON.stringify(userPayload),
           headers: new Headers({
             "Content-Type": "application/json",
@@ -47,6 +51,7 @@ const SignInForm = () => {
           throw(error)
         }
         const userData = await response.json()
+        console.log(userData)
         setShouldRedirect(true)
       }
     } catch(err) {
@@ -71,9 +76,9 @@ const SignInForm = () => {
       <form>
         <div>
           <label>
-            Email
-            <input type="text" name="email" value={userPayload.email} onChange={onInputChange} />
-            <FormError error={errors.email} />
+            Username
+            <input type="text" name="username" value={userPayload.username} onChange={onInputChange} />
+            <FormError error={errors.username} />
           </label>
         </div>
         <div>
