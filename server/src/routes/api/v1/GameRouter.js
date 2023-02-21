@@ -7,7 +7,13 @@ import cleanUserInput from "../../../services/cleanUserInput.js"
 import { Game } from "../../../models/index.js"
 import GameSerializer from "../../../serializers/GameSerializer.js";
 
+
 const gameRouter = new express.Router()
+
+
+
+
+
 
 gameRouter.get("/all", async (req, res) => {
     try {
