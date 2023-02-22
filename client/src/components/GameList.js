@@ -9,314 +9,269 @@ import getCurrentUser from "../services/getCurrentUser"
 
 const axios = require('axios')
 const cheerio = require('cheerio')
-// const cors = require('cors')
-// const corsOptions = {
-//     origin:"http://localhost:3000",
-//     credentials:true,
-//     optionSuccessStatus:200
-// }
-
-// app.use(cors(corsOptions))
 
 let url = ''
 
 const GameList = (props) => {
     const currentUser = props.currentUser
-
+    const games = props.games
     console.log(currentUser)
-
-    const [user, setUser] = useState({ games: [] })
-    const [games, setGames] = useState([])
-    const [errors, setErrors] = useState({})
-
-    const getGames = async () => {
-        try {
-            console.log("Hello")
-            const response = await fetch("/api/v1/games/all")
-            if (!response.ok) {
-                throw new Error(`${response.status} (${response.statusText})`)
-            }
-            console.log(response)
-            const body = await response.json()
-            setGames(body.games)
-            console.log(body)
-            
-        } catch (error) {
-            console.error(`Error in fetch: ${error.message}`)
-        }
-    }
+    console.log(props.games)
+    
+    const [images, setImages] = useState([])
+    const [errors, setErrors] = useState ({})
+    const [gamesArray, setGamesArray] = useState([])
+    
+    
 
     console.log(games)
 
+    
     useEffect(() => {
-        getGames()
-    }, [])
+        getImages()        
+    }, [props.games])
 
-    const addGame = async (formData) => {
+    
+    const getImages = async () => {
         try {
 
-            formData.userID = props.currentUser.id
-            console.log(formData)
-            const response = await fetch('/api/v1/games/new', {
-                method: "POST",
-                headers: new Headers({
-                    "Content-Type": "application/json"
-                }),
-                body: JSON.stringify({ formData })
-            })
-            if (!response.ok) {
-                if (response.status === 422) {
-                    const errorBody = await response.json()
-                    const newErrors = translateServerErrors(errorBody.errors)
-                    return setErrors(newErrors)
-                }
-                throw new Error(`${response.status} (${response.statusText})`)
-            } else {
-                console.log(response)
-                const { newGame } = await response.json()
-                console.log(newGame)
+            for (let i = 0; i < games.length; i++)
+            {
 
-                setGames([...games, newGame])
-                setErrors({})
-                return true
+            console.log(games[i])
+                
+            let gameName = games[i].title
+            
+            let imgUrl
+
+            let imgArray = []
+            
+            console.log(gameName)
+            
+            let gameName2 = gameName.replaceAll(' ', '%20')
+            
+            console.log(gameName2)
+            
+            url = `http://api.scraperapi.com?api_key=9f85b6d9712586e31ed9484e10cdb891&url=https://www.metacritic.com/search/game/${gameName2}/results`
+            
+                axios(url).then(response => {
+
+                    
+                    
+                    const html = response.data
+                    const $ = cheerio.load(html)
+                    
+                    $('.first_result', html).each(function() {
+                        var a = $(this)
+                        
+                        imgUrl = a.find('img').attr('src');
+                        
+                        console.log(a)
+                        
+                        console.log(imgUrl)
+                        
+                        console.log(images)
+                        
+                    })
+                    
+                    
+                    
+                    console.log(imgArray)
+                    console.log(url)
+                    
+                    console.log(imgUrl)
+
+                    let image = { title: games[i].title, image: imgUrl }
+                    
+                    setImages(images => [...images, image])
+                })
             }
-        } catch (error) {
-            console.error(`Fetch post error: ${error.name} (${error.message})`)
+            
+        } catch(error) {
+            console.error(`Error in useEffect! ${error.message}`)
         }
     }
+    
+        
+
+
     
     console.log(props.currentUser)
     console.log(games)
 
-//     const gameList = games.map((game) => {
-        
-//         let gameName = game.title
-
-//         let imgUrl
-
-//         console.log(gameName)
-
-//         let gameName2 = gameName.replaceAll(' ', '%20')
-
-//        console.log(gameName2)
-
-//        url = `http://api.scraperapi.com?api_key=9f85b6d9712586e31ed9484e10cdb891&url=https://www.metacritic.com/search/game/${gameName2}/results`
-
-//        const getImage = async () => {
-//            const response = await axios(url)
-
-           
-//            const html = response.data
-//            const $ = cheerio.load(html)
-           
-//            $('.first_result', html).each(function() {
-//                var a = $(this)
-               
-//                imgUrl = a.find('img').attr('src');
-               
-//                console.log(a)
-               
-//                console.log(imgUrl)
-//             })
-            
-//             console.log(url)
-            
-//             console.log(imgUrl)
-
-//             return imgUrl
-//         }
-
-//         const getImgUrl = async () => {
-//             const image = await getImage()
-//         }
+    console.log(images)
 
 
-            
-//             if (props.currentUser) 
-//             {
-                
-//                 if (game.userID === props.currentUser.id) {
-//                     return (
-//                         <div className="callout secondary cell small-4 medium-4 large-4">
-//                         <GameTile
-//                         key={game.id}
-//                         game={game}
-//                         currentUser={props.currentUser}
-//                         image={getImgUrl()}
-//                         />
-//                     </div>
-        
-//         )
-//     }
-// }
-// })
+    const completeGames = games.map((game) => {
+        if (props.currentUser) 
+        {
+          
+            if (game.userID === props.currentUser.id) {
+                if(game.progress == "Complete") {
+                    let image = images[game.id - 1]
 
-// let gameList =[] 
-
-// let gameName
-// let gameName2
-// let imgUrl
-// let serializedGame
-
-// for (let i = 0; i < games.length; i++ ) { 
-
-            
-            
-            
+                return (
+                    <div className="callout secondary cell small-12 medium-12 large-12 gameTile">
+                    <GameTile
+                    key={game.id}
+                    game={game}
+                    currentUser={props.currentUser}
+                    images={images}
+                    />
+                </div>
     
-//     const getImage = async () => {
-        
-//         gameName = games[i].title
-        
-        
-//         console.log(gameName)
-        
-//         gameName2 = gameName.replaceAll(' ', '%20')
-        
-//         console.log(gameName2)
-        
-//         url = `http://api.scraperapi.com?api_key=9f85b6d9712586e31ed9484e10cdb891&url=https://www.metacritic.com/search/game/${gameName2}/results`
-
-//         serializedGame = games[i] 
-
-//         serializedGame.image = await new Promise (async (image) => {
-
-            
-//             const response = await axios(url)
-            
-            
-//             const html = response.data
-//             const $ = cheerio.load(html)
-            
-//             $('.first_result', html).each(function() {
-//                 var a = $(this)
-                
-//                 imgUrl = a.find('img').attr('src');
-                
-//                 console.log(a)
-                
-//                 console.log(imgUrl)
-//             })
-            
-//             console.log(url)
-            
-//             console.log(imgUrl)
-            
-//         }).then(function(){
-//             return imgUrl
-//         })
-//         }
-        
-//         console.log(imgUrl)
-
-//         const image = getImage()
-//         console.log(image)
+                    )
     
-//     if (props.currentUser) 
-//     {
-//             if (games[i].userID === props.currentUser.id && games[i].image) {
-
+                }
+            }
             
-//         games[i].image = image
+        }
+})
 
-//         gameList.push(games[i])
+const inProgressGames = games.map((game) => {
+
     
-//         console.log(gameList)
-//         }
-// }
-// }
 
-// console.log(gameList)
-
-let gameName = ''
-let gameName2 = ''
-let url = ''
-let currentGame
-let imgUrl = ''
-
-const getUrl = gameName => 
-new Promise(resolve => setTimeout(() => resolve(gameName), 2000))
-
-const listGames = async () => {
-    for(let i = 0; i < games.length; i++) {
-
-        gameName = await getUrl(games[i].title)
-        .then(() => {
-            console.log(gameName)
-            
-            if (gameName)
-            gameName2 = gameName.replaceAll(' ', '%20')
-            console.log(gameName2)
-
-            url = `http://api.scraperapi.com?api_key=9f85b6d9712586e31ed9484e10cdb891&url=https://www.metacritic.com/search/game/${gameName2}/results`
-        }    
-        )
+    if (props.currentUser) 
+    {
         
-                
-                
-                
+        if (game.userID === props.currentUser.id) {
+            if(game.progress == "In Progress") {
+            return (
+                <div className="callout secondary cell small-12 medium-12 large-12 gameTile">
+                <GameTile
+                key={game.id}
+                game={game}
+                currentUser={props.currentUser}
+                images={images}
+                />
+            </div>
 
-        axios(url)
-        .then(response => {
-            const html = response.data
-            const $ = cheerio.load(html)
+                )
 
-            $('.first_result', html).each(function() {
-            var a = $(this)
-                                
-            imgUrl = a.find('img').attr('src');
+            }
+        }
+    }
+})
 
-            console.log(imgUrl)
-        })
+const notStartedGames = games.map((game) => {
+    if (props.currentUser) 
+    {
         
-    }).then(() => {
+        if (game.userID === props.currentUser.id) {
+            if(game.progress == "Not Started") {
+            return (
+                <div className="callout secondary cell small-12 medium-12 large-12 gameTile">
+                <GameTile
+                key={game.id}
+                game={game}
+                currentUser={props.currentUser}
+                images={images}
+                />
+            </div>
 
-        console.log(games[i])
-        console.log(games[i].userID)
-        console.log(currentUser.id)
-        console.log(imgUrl)
-        
-        if (props.currentUser) {
-        if (games[i].userID === currentUser.id) {
-        
-        return (
-                                    <div className="callout secondary cell small-4 medium-4 large-4">
-                                    <GameTile
-                                    key={games[i].id}
-                                    game={games[i]}
-                                    currentUser={props.currentUser}
-                                    image={imgUrl}
-                                    />
-                                </div>
-        )
+                )
+
+            }
+        }
+    }
+})
+
+    let completeGamesLength = 0
+    let inProgressGamesLength = 0
+    let notStartedGamesLength = 0
+
+    if (currentUser) {
+
+        for (let i = 0; i < games.length; i++) {
+            if (games[i].userID === props.currentUser.id) {
+                if (games[i].progress == "Complete") {
+                    completeGamesLength++
+            }
+        }
     }
 }
-    })
+    
+if (currentUser) {
+
+    for (let i = 0; i < games.length; i++) {
+        if (games[i].userID === props.currentUser.id) {
+            if (games[i].progress == "In Progress") {
+                inProgressGamesLength++
+        }
+    }
 }
 }
 
-let gameTiles = listGames()
+if (currentUser) {
 
-console.log(gameTiles)
-
+    for (let i = 0; i < games.length; i++) {
+        if (games[i].userID === props.currentUser.id) {
+            if (games[i].progress == "Not Started") {
+                notStartedGamesLength++
+        }
+    }
+}
+}
 
 
     return (
         <div>
 
-            
-            <div className="grid-containter">
+            <div className="grid-container">
                 <div className="grid-x grid-margin-x">
-                        {/* {gameTiles} */}
+                    <div className="callout secondary cell small-4 medium-4 large-4">
+
+
+            
+            <div className="grid-containter border">
+                        
+                        <h4 className="gameList-Header">Here are your Completed Games:</h4>
+
+                        <h6>- You have {completeGamesLength} completed games -</h6>
+                       
+                        <div className="grid-x grid-margin-x">
+                        {completeGames}
+
                 </div>
             </div>
+                       
+                    </div>
 
-            <h4>Add a new game to your list!</h4>
-            <NewGameForm
-            addGame={addGame}
-            errors={errors} 
-            currentUser={props.currentUser} />
+                    <div className="callout secondary cell small-4 medium-4 large-4">
 
+
+            <div className="grid-containter border">
+                        
+                        <h4 className="gameList-Header">Here are your In-Progress Games:</h4>
+
+                        <h6>- You have {inProgressGamesLength} in-progress games -</h6>
+                       
+                        <div className="grid-x grid-margin-x">
+                        {inProgressGames}
+
+                </div>
+            </div>
+                    </div>
+                    <div className="callout secondary cell small-4 medium-4 large-4">
+
+
+            <div className="grid-containter border">
+                        
+                        <h4 className="gameList-Header">Here are the Games you own that you have not started yet:</h4>
+
+                        <h6>- You have {notStartedGamesLength} not started games -</h6>
+                       
+                        <div className="grid-x grid-margin-x">
+                        {notStartedGames}
+
+                </div>
+            </div>
+                    </div>
+            </div>
+            </div>
+
+          
         </div>
     )
 }

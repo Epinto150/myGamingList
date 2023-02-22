@@ -1,18 +1,32 @@
 import React, { useState } from "react"
 
-const GameTile = ({ game , image }) => {
-    const { id, title, progress, system, description, userID} = game
+const GameTile = (props) => {
+    const { game, currentUser, images} = props
     
-    console.log(image)
+    let correctImage
+
+    console.log(images)
+
+    console.log(game.id)
+
+    if (images) {
+
+        images.map((image) => {
+            if (game.title == image.title) {
+                correctImage = image.image
+            }
+        })
+    }
+
 
 
     return (
         <div>
-            <img src={`${image}`} alt="Cover not found"></img>
-            <h4>{title}</h4>
-            <p>{progress}</p>
-            <p>{system}</p>
-            <p>{description}</p>
+            <img src={`${correctImage}`} alt="Cover not found"></img>
+            <h4>{game.title}</h4>
+            <p>{game.progress}</p>
+            <p>{game.system}</p>
+            <p>{game.description}</p>
         </div>
     )
 }

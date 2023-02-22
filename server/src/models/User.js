@@ -30,6 +30,7 @@ class User extends uniqueFunc(Model) {
 
       properties: {
         username: { type: "string" },
+        steamID: { type: "string" },
         cryptedPassword: { type: "string" },
       },
     };
