@@ -60,27 +60,27 @@ const NewGameForm = ({ addGame, errors }) => {
        <form onSubmit={handleSubmit}>
            <ErrorList errors={errors} />
           
-           <label htmlFor="title">
+           <label htmlFor="title" className="form-text">
                Title: <input type="text" name="title" onChange={handleInputChange} value={newGame.title} />
            </label>
 
 
-           <label htmlFor="progress">
+           <label  className="form-text" htmlFor="progress">
                Progress: <select name="progress" onChange={handleInputChange} value={newGame.progress}>
                    {progressOptions}
                </select>
            </label>
 
 
-           <label htmlFor="system">
+           <label htmlFor="system" className="form-text">
                System: <select name="system" onChange={handleInputChange} value={newGame.system}>
                    {systemOptions}
                </select>
            </label>
 
 
-           <label htmlFor="description">
-               Description: <input type="text"
+           <label htmlFor="description" className="form-text">
+               Description (optional): <input type="text"
                name="description"
                onChange={handleInputChange}
                value={newGame.description} />

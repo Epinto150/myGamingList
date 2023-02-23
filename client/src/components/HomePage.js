@@ -38,14 +38,15 @@ const HomePage = (props) => {
     console.log(games)
     
 useEffect(() => {
-    getGames();
+    getGames()
+
 }, [])
 
 const addGame = async (formData) => {
     try {
 
         formData.userID = props.currentUser.id
-        console.log(formData)
+        // console.log(formData)
         const response = await fetch('/api/v1/games/new', {
             method: "POST",
             headers: new Headers({
@@ -82,8 +83,8 @@ const addGame = async (formData) => {
         <div>
             <div className="grid-container">
                 <div className="grid-x grid-margin-x">
-                    <div className="callout secondary cell">
-                        <h2>Welcome to My Gaming List!</h2>
+                    <div className="callout welcome cell">
+                        <h2>Welcome to myGamingList!</h2>
                     </div>
                 </div>
             </div>
@@ -93,12 +94,12 @@ const addGame = async (formData) => {
             </div>
 
             <div className={`${formVisibility} gameList`}>
-                <h3>Here is your current Gaming List:</h3>
-                <GameList games={games} currentUser={props.currentUser} errors={errors}/>
+                <h3 className="gameList-Header">Here is your current  List</h3>
+                <GameList setGames={setGames} games={games} currentUser={props.currentUser} errors={errors}/>
 
                 <div align="center" className="grid-container">
                 <div className="grid-x grid-margin-x">
-                    <div className="callout secondary game-form">
+                    <div className="callout  game-form">
 
 
             <h4>Add a new game to your list!</h4>

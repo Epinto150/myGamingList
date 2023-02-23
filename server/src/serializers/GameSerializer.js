@@ -1,6 +1,6 @@
 class GameSerializer {
     static async getSummary(game) {
-        const allowedAttributes = ['id', 'title', 'progress', 'system', 'description', 'userID']
+        const allowedAttributes = ['id', 'title', 'progress', 'system', 'description', 'userID', 'image']
 
         let serializedGame = {}
 

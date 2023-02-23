@@ -15,6 +15,7 @@ let url = ''
 const GameList = (props) => {
     const currentUser = props.currentUser
     const games = props.games
+    const setGames = props.setGames
     console.log(currentUser)
     console.log(props.games)
     
@@ -48,7 +49,12 @@ const GameList = (props) => {
             
             console.log(gameName)
             
-            let gameName2 = gameName.replaceAll(' ', '%20')
+            let gameName2 
+            
+            if(gameName) {
+                gameName2 = gameName.replaceAll(' ', '%20')
+
+            }
             
             console.log(gameName2)
             
@@ -114,6 +120,8 @@ const GameList = (props) => {
                     <div className="callout secondary cell small-12 medium-12 large-12 gameTile">
                     <GameTile
                     key={game.id}
+                    setGames={setGames}
+                    games={games}
                     game={game}
                     currentUser={props.currentUser}
                     images={images}
@@ -141,7 +149,9 @@ const inProgressGames = games.map((game) => {
                 <div className="callout secondary cell small-12 medium-12 large-12 gameTile">
                 <GameTile
                 key={game.id}
+                setGames={setGames}
                 game={game}
+                games={games}
                 currentUser={props.currentUser}
                 images={images}
                 />
@@ -164,7 +174,9 @@ const notStartedGames = games.map((game) => {
                 <div className="callout secondary cell small-12 medium-12 large-12 gameTile">
                 <GameTile
                 key={game.id}
+                setGames={setGames}
                 game={game}
+                games={games}
                 currentUser={props.currentUser}
                 images={images}
                 />
@@ -220,15 +232,15 @@ if (currentUser) {
 
             <div className="grid-container">
                 <div className="grid-x grid-margin-x">
-                    <div className="callout secondary cell small-4 medium-4 large-4">
+                    <div className="callout game-list cell small-4 medium-4 large-4">
 
 
             
             <div className="grid-containter border">
                         
-                        <h4 className="gameList-Header">Here are your Completed Games:</h4>
+                        <h4 className="gameTile-Header">Completed Games</h4>
 
-                        <h6>- You have {completeGamesLength} completed games -</h6>
+                        <h6 className="numberOfGames">-You have {completeGamesLength} completed games-</h6>
                        
                         <div className="grid-x grid-margin-x">
                         {completeGames}
@@ -238,14 +250,14 @@ if (currentUser) {
                        
                     </div>
 
-                    <div className="callout secondary cell small-4 medium-4 large-4">
+                    <div className="callout game-list cell small-4 medium-4 large-4">
 
 
-            <div className="grid-containter border">
+            <div className="grid-containter  border">
                         
-                        <h4 className="gameList-Header">Here are your In-Progress Games:</h4>
+                        <h4 className="gameTile-Header">In-Progress Games</h4>
 
-                        <h6>- You have {inProgressGamesLength} in-progress games -</h6>
+                        <h6 className="numberOfGames">-You have {inProgressGamesLength} in-progress games-</h6>
                        
                         <div className="grid-x grid-margin-x">
                         {inProgressGames}
@@ -253,14 +265,14 @@ if (currentUser) {
                 </div>
             </div>
                     </div>
-                    <div className="callout secondary cell small-4 medium-4 large-4">
+                    <div className="callout game-list cell small-4 medium-4 large-4">
 
 
             <div className="grid-containter border">
                         
-                        <h4 className="gameList-Header">Here are the Games you own that you have not started yet:</h4>
+                        <h4 className="gameTile-Header">Not Started</h4>
 
-                        <h6>- You have {notStartedGamesLength} not started games -</h6>
+                        <h6 className="numberOfGames">-You have {notStartedGamesLength} not started games-</h6>
                        
                         <div className="grid-x grid-margin-x">
                         {notStartedGames}
