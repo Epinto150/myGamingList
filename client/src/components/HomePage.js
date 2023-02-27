@@ -76,7 +76,7 @@ const addGame = async (formData) => {
             <div className="grid-container">
                 <div className="grid-x grid-margin-x">
                     <div className="callout welcome cell">
-                        <h2>Welcome to myGamingList!</h2>
+                        <h2 align="center" className="welcome">Welcome to myGamingList!</h2>
                     </div>
                 </div>
             </div>

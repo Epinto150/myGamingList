@@ -63,13 +63,11 @@ const GameTile = (props) => {
                     <Trophies trophies={game.trophies} />
                 </div>
             <img className="game-cover" src={`${correctImage}`} alt="Cover not found"></img>
-            <h4>{game.title}</h4>
+            <h4 className="tileTitle">{game.title}</h4>
             <div className="tileText">Progress</div>
             <p>{game.progress}</p>
             <div className="tileText">System</div>
             <p>{game.system}</p>
-
-            <p>{game.trophies}</p>
 
             <div>
                 {deleteButton}
@@ -94,8 +92,8 @@ else if (game.description) {
     return (
         <div>
         <Trophies trophies={game.trophies} />
-        <img className="game-cover" src={`${correctImage}`} alt="Cover not found"></img>
-        <h4>{game.title}</h4>
+        <img className="game-cover" src={`${correctImage}`} alt="Cover is loading"></img>
+        <h4 className="tileTitle">{game.title}</h4>
         <div className="tileText">Progress</div>
         <p>{game.progress}</p>
         <div className="tileText">System</div>

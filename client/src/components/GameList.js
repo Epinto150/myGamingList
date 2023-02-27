@@ -331,7 +331,7 @@ let showTrophyCount
     return (
         <div>
 
-            <h3 align="center">Hi {username}, here is your gaming list!</h3>
+            <h3 align="center" className="greeting">Hi {username}, here is your gaming list!</h3>
 
             <h4 align="center"><Trophy trophies={1} /> {showTrophyCount} </h4>
             

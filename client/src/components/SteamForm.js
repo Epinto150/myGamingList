@@ -40,7 +40,7 @@ const SteamForm = (props) => {
         <div>
 
         <div className={`grid-container ${formVisibility}`} onSubmit={onSubmit}>
-            <h1>Sync your Steam games to your list!</h1>
+            <h3 className="syncSteam">Sync your Steam games to your list!</h3>
             <form>
                 <div>
                     <label>

@@ -1,6 +1,7 @@
 @import "./foundation/settings";
 @import "~foundation-sites/scss/foundation";
 @include foundation-everything;
+@import url(https://fonts.googleapis.com/css2?family=Crimson+Text:ital@1&display=swap);
 // place global css here
 *,
 *::before,
@@ -11,6 +12,21 @@
 :root {
   -moz-tab-size: 4;
   tab-size: 4;
+}
+
+.topBar {
+  font-family: 'Crimson Text', serif; 
+}
+
+.welcome {
+  font-family: 'Crimson Text', serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.greeting {
+  font-family: 'Crimson Text', serif;
+  font-style: italic;
 }
 
 .gameList {
@@ -37,7 +53,8 @@
 .gameTile-Header {
   padding: 10px;
   font-style: italic;
-  font-weight: 1000
+  font-weight: 1000;
+  font-family: 'Crimson Text', serif;
 }
 
 .gameTile {
@@ -70,10 +87,23 @@
 
 .tileText {
   text-decoration:underline;
+  font-family: 'Crimson Text', serif;
+}
+
+.tileTitle {
+  font-family: 'Crimson Text', serif;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.syncSteam {
+  font-family: 'Crimson Text', serif;
+  
 }
 
 .numberOfGames {
   font-weight: 100;
+  
 }
 
 .game-cover {
