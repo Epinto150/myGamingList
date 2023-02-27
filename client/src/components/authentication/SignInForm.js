@@ -27,6 +27,7 @@ const SignInForm = () => {
       };
     }
 
+
     setErrors(newErrors);
   };
 
@@ -55,6 +56,10 @@ const SignInForm = () => {
         setShouldRedirect(true)
       }
     } catch(err) {
+
+      let newError = {username: "The Username or Password you provided is not in the database. Please try again."}
+
+      setErrors(newError)
       console.error(`Error in fetch: ${err.message}`)
     }
   }
