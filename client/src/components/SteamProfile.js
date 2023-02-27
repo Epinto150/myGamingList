@@ -35,7 +35,7 @@ const SteamProfile = (props) => {
                     steamAppId = steamGameData[i]
                     console.log(steamAppId)
                     
-                    gameUrl = `http://api.scraperapi.com?api_key=9d10a96d51b67b0a5d6486c58373d91c&url=https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid=${steamAppId}&key=38A6570C41BACF954320F6922DA97D9D&steamid=${steamID}`
+                    gameUrl = `https://api.scraperapi.com?api_key=9d10a96d51b67b0a5d6486c58373d91c&url=https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid=${steamAppId}&key=38A6570C41BACF954320F6922DA97D9D&steamid=${steamID}`
                     
                     axios(gameUrl).then(response => {
                        

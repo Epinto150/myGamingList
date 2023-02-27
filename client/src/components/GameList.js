@@ -84,7 +84,7 @@ const GameList = (props) => {
                 }
                 
                 
-                url = `http://api.scraperapi.com?api_key=9d10a96d51b67b0a5d6486c58373d91c&url=https://www.metacritic.com/search/game/${gameName2}/results`
+                url = `https://api.scraperapi.com?api_key=9d10a96d51b67b0a5d6486c58373d91c&url=https://www.metacritic.com/search/game/${gameName2}/results`
                 
                 axios(url).then(response => {
                     
