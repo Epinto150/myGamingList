@@ -97,9 +97,9 @@ const SteamProfile = (props) => {
             <div>
 
             <div className="steamProfileTile" key={steamProfile.steamid}>
-                <h4>Steam Profile:</h4>
-                <h4 className="steamProfileName">{steamProfile.steamName}</h4>
-                <img src={`${steamProfile.avatar}`} className="steamProfileAvatar"/>
+                <h4 align="center">Steam Profile:</h4>
+                <h4 align="center" className="steamProfileName">{steamProfile.steamName}</h4>
+                <img align="center" src={`${steamProfile.avatar}`} className="steamProfileAvatar"/>
                 </div>
                 </div>
         )
