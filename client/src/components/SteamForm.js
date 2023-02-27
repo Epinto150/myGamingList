@@ -10,42 +10,26 @@ const SteamForm = (props) => {
     const [defaultVisibility, setDefaultVisibility] = useState("invisible")
     const [users, setUsers] = useState({})
 
-    
-
-    console.log(props.currentUser)
+    const { games, setGames, images, addGame} = props
 
     const onSubmit = async (event) => {
         event.preventDefault()
-
-        console.log(userPayload)
-        
         
         setFormVisibility("invisible")
         setDefaultVisibility("visible")
         setSteamProfileArray([...steamProfileArray, userPayload])
-        console.log(userPayload)
-
-        console.log(steamProfileArray)
-
        
     }
-
-    console.log(steamProfileArray)
-    console.log(steamProfileArray.length)
     const steamProfile = steamProfileArray.map((payload) => {
         
             return (
             <div>
                 <Steam currentUser={props.currentUser}
-                userPayload={payload} errors={errors}/>
+                userPayload={payload} errors={errors} games={games} setGames={setGames} addGame={addGame}/>
             </div>
             )
         
     })
-       
-
-    console.log(props.currentUser)
-    console.log(userPayload)
 
     const onInputChange = (event) => {
         setUserPayload({ ...userPayload, [event.currentTarget.name]: event.currentTarget.value, 
@@ -56,7 +40,7 @@ const SteamForm = (props) => {
         <div>
 
         <div className={`grid-container ${formVisibility}`} onSubmit={onSubmit}>
-            <h1>Add Steam ID to your account!</h1>
+            <h1>Sync your Steam games to your list!</h1>
             <form>
                 <div>
                     <label>
