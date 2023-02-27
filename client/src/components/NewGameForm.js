@@ -14,6 +14,7 @@ const NewGameForm = ({ addGame, errors }) => {
        progress: '',
        system: '',
        description: '',
+       trophies: 0
    }
 
 

@@ -13,29 +13,26 @@ const HomePage = (props) => {
 
     let defaultVisibility = "visible"
 
+
     if (props.currentUser) {
         formVisibility = "visible"
         defaultVisibility = "invisible"
     }
 
+    
+
     const getGames = async () => {
         try {
-            console.log("Hello")
             const response = await fetch("/api/v1/games/all")
             if (!response.ok) {
                 throw new Error(`${response.status} (${response.statusText})`)
             }
-            console.log(response)
             const body = await response.json()
             setGames(body.games)
-            console.log(body)
-            
         } catch (error) {
             console.error(`Error in fetch: ${error.message}`)
         }
     }
-    
-    console.log(games)
     
 useEffect(() => {
     getGames()
@@ -46,7 +43,6 @@ const addGame = async (formData) => {
     try {
 
         formData.userID = props.currentUser.id
-        // console.log(formData)
         const response = await fetch('/api/v1/games/new', {
             method: "POST",
             headers: new Headers({
@@ -62,9 +58,7 @@ const addGame = async (formData) => {
             }
             throw new Error(`${response.status} (${response.statusText})`)
         } else {
-            console.log(response)
             const { newGame } = await response.json()
-            console.log(newGame)
 
             setGames([...games, newGame])
             setErrors({})
@@ -75,12 +69,10 @@ const addGame = async (formData) => {
     }
 }
 
+    if (games) {
 
-
-    console.log(props.currentUser)
-
-    return (
-        <div>
+        return (
+            <div>
             <div className="grid-container">
                 <div className="grid-x grid-margin-x">
                     <div className="callout welcome cell">
@@ -94,30 +86,30 @@ const addGame = async (formData) => {
             </div>
 
             <div className={`${formVisibility} gameList`}>
-                <h3 className="gameList-Header">Here is your current  List</h3>
-                <GameList setGames={setGames} games={games} currentUser={props.currentUser} errors={errors}/>
+                <h3 className="gameList-Header"></h3>
+                <GameList setGames={setGames} games={games} currentUser={props.currentUser} errors={errors} addGame={addGame}/>
 
                 <div align="center" className="grid-container">
                 <div className="grid-x grid-margin-x">
                     <div className="callout  game-form">
 
 
-            <h4>Add a new game to your list!</h4>
+            {/* <h4>Add a new game to your list!</h4>
             <NewGameForm
             addGame={addGame}
             errors={errors} 
-            currentUser={props.currentUser} />
+            currentUser={props.currentUser} /> */}
 
                     </div>
                 </div>
             </div>
 
 
-                <SteamForm currentUser={props.currentUser} errors={errors}/>
             </div>
             
         </div>
     )
+}
 }
 
 export default HomePage

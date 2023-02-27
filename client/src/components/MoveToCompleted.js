@@ -5,8 +5,8 @@ const ButtonToCompleted = (props) => {
 
     const moveGame = async () => {
         try {
-            const response = await fetch(`/api/v1/games/${gameId}`, {
-                method: "patch",
+            const response = await fetch(`/api/v1/games/${gameId}/complete`, {
+                method: "PATCH",
                 headers: new Headers({
                     "Content-Type":"application/json"
                 }),
@@ -26,8 +26,6 @@ const ButtonToCompleted = (props) => {
                 const returnedGames = games.filter(game => game.id !== gameId) 
                 const updatedGame = game
                 updatedGame.progress = "Complete"
-                console.log(updatedGame)
-                console.log(returnedGames)
                 setGames(
                     [...returnedGames, updatedGame]
                 )
