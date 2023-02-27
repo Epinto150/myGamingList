@@ -16,7 +16,9 @@ class Game extends Model {
                 progress: { type: "string" },
                 system: { type: "string" },
                 description: { type: "string" },
-                userID: { type: "string" }
+                userID: { type: "string" },
+                image: { type: "string" },
+                trophies: { type: "integer" }
             }
         }
     }

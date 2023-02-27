@@ -9,7 +9,8 @@ const rootRouter = new express.Router();
 rootRouter.use("/", clientRouter);
 rootRouter.use("/api/v1/user-sessions", userSessionsRouter);
 rootRouter.use("/api/v1/users", usersRouter);
-rootRouter.use("/api/v1/games", gameRouter)
+rootRouter.use("/api/v1/games", gameRouter);
+
 
 
 //place your server-side routes here

@@ -38,6 +38,7 @@ class User extends uniqueFunc(Model) {
 
   static get relationMappings(){
     const { Game } = require("./index.js")
+    const { SteamGame } = require("./index.js")
 
     return {
       games: {

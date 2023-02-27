@@ -21,57 +21,9 @@ gameRouter.get("/all", async (req, res) => {
     try {
         const games = await Game.query()
         const serializedGames = await GameSerializer.getSummaries(games)
-
+        
 
         // scrape the metacritic pages for those images and also add those to the response
-            // try {
-    
-            //     for (let i = 0; i < serializedGames.length; i++)
-            //     {
-    
-            //     console.log(serializedGames[i])
-                    
-            //     let gameName = serializedGames[i].title
-                
-            //     let imgUrl
-                    
-            //     console.log(gameName)
-                
-            //     let gameName2 = gameName.replaceAll(' ', '%20')
-                
-            //     console.log(gameName2)
-                
-            //     url = `http://api.scraperapi.com?api_key=9f85b6d9712586e31ed9484e10cdb891&url=https://www.metacritic.com/search/game/${gameName2}/results`
-                
-            //         axios(url).then(response => {
-            
-            //             const html = response.data
-            //             const $ = cheerio.load(html)
-                        
-            //             $('.first_result', html).each(function() {
-            //                 var a = $(this)
-                            
-            //                 imgUrl = a.find('img').attr('src');
-                            
-            //                 console.log(a)
-                            
-            //                 console.log(imgUrl)
-                            
-            //             })
-                        
-            //             console.log(url)
-                        
-            //             console.log(imgUrl)
-    
-            //             let image = { title: serializedGames[i].title, image: imgUrl }
-                        
-            //             setImages(images => [...images, image])
-            //         })
-            //     }
-                
-            // } catch(error) {
-            //     console.error(`Error in useEffect! ${error.message}`)
-            // }
         
 
 
@@ -88,7 +40,7 @@ gameRouter.get("/all", async (req, res) => {
 gameRouter.post("/new", async (req, res) => {
     const { formData } = req.body;
     const cleanedFormData = cleanUserInput(formData)
-
+    
     try {
         const newGame = await Game.query().insertAndFetch(cleanedFormData)
         return res.status(201).json({ newGame })
@@ -99,6 +51,66 @@ gameRouter.post("/new", async (req, res) => {
         return res.status(500).json({ errors: error })
     }
 
+})
+
+gameRouter.patch("/:id/complete", async (req,res) => {
+    const { id } = req.params
+
+    try {
+
+        const game = await Game.query().findById(id)
+        game.progress = "Complete"
+        console.log(game)
+
+        const updatedGames = await Game.query().findById(id).delete()
+
+        const newGamesList = await Game.query().insertAndFetch(game)   
+            
+        return res.status(201).json({ newGamesList })
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({errors: err})
+    }
+})
+
+gameRouter.patch("/:id/inprogress", async (req,res) => {
+    const { id } = req.params
+
+    try {
+
+        const game = await Game.query().findById(id)
+        game.progress = "In Progress"
+        console.log(game)
+
+        const updatedGames = await Game.query().findById(id).delete()
+
+        const newGamesList = await Game.query().insertAndFetch(game)   
+            
+        return res.status(201).json({ newGamesList })
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({errors: err})
+    }
+})
+
+gameRouter.patch("/:id/notstarted", async (req,res) => {
+    const { id } = req.params
+
+    try {
+
+        const game = await Game.query().findById(id)
+        game.progress = "Not Started"
+        console.log(game)
+
+        const updatedGames = await Game.query().findById(id).delete()
+
+        const newGamesList = await Game.query().insertAndFetch(game)   
+            
+        return res.status(201).json({ newGamesList })
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({errors: err})
+    }
 })
 
 gameRouter.delete("/:id", async (req,res) => {
@@ -114,26 +126,5 @@ gameRouter.delete("/:id", async (req,res) => {
     }
 })
 
-gameRouter.patch("/:id", async (req,res) => {
-    const { id } = req.params
-
-    
-    try {
-        const game = await Game.query().findById(req.params.id)
-        game.progress = "Complete"
-
-        console.log(game)
-
-        const returnedGames = await Game.query().findById(req.params.id).delete()
-        const updatedGames = await Game.query().insertAndFetch(game)
-        console.log(updatedGames)
-        
-        
-            
-        return res.status(201).json({ updatedGames })
-    } catch (err) {
-        return res.status(500).json({errors: err})
-    }
-})
 
 export default gameRouter
