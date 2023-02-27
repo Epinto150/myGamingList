@@ -88,21 +88,21 @@ const addGame = async (formData) => {
             <div className={`${formVisibility} gameList`}>
                 <h3 className="gameList-Header"></h3>
                 <GameList setGames={setGames} games={games} currentUser={props.currentUser} errors={errors} addGame={addGame}/>
-
+{/* 
                 <div align="center" className="grid-container">
                 <div className="grid-x grid-margin-x">
                     <div className="callout  game-form">
 
 
-            {/* <h4>Add a new game to your list!</h4>
+            <h4>Add a new game to your list!</h4>
             <NewGameForm
             addGame={addGame}
             errors={errors} 
-            currentUser={props.currentUser} /> */}
+            currentUser={props.currentUser} />
 
                     </div>
                 </div>
-            </div>
+            </div> */}
 
 
             </div>
