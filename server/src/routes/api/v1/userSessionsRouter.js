@@ -33,4 +33,24 @@ sessionRouter.delete("/", (req, res) => {
   res.status(200).json({ message: "User signed out" });
 });
 
+sessionRouter.patch("/current", async (req, res) => {
+
+  
+  if (req.user) {
+    
+    let changes = req.body
+    let updatedUser = req.user
+    
+    try {
+      Object.assign(updatedUser, changes)
+      return res.status(200).json(updatedUser)
+    } catch (error) {
+      return res.status(500).json({
+        errors: error
+      })
+    }
+
+  }
+})
+
 export default sessionRouter;

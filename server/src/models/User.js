@@ -6,7 +6,7 @@ const Model = require("./Model");
 const saltRounds = 10;
 
 const uniqueFunc = unique({
-  fields: ["email"],
+  fields: ["username"],
   identifiers: ["id"],
 });
 
@@ -26,13 +26,30 @@ class User extends uniqueFunc(Model) {
   static get jsonSchema() {
     return {
       type: "object",
-      required: ["email"],
+      required: ["username"],
 
       properties: {
-        email: { type: "string", format: "email" },
+        username: { type: "string" },
+        steamID: { type: "string" },
         cryptedPassword: { type: "string" },
       },
     };
+  }
+
+  static get relationMappings(){
+    const { Game } = require("./index.js")
+    const { SteamGame } = require("./index.js")
+
+    return {
+      games: {
+        relation: Model.HasManyRelation,
+        modelClass: Game,
+        join: {
+          from: "users.id",
+          to: "games.userID"
+        }
+      }
+    }
   }
 
   $formatJson(json) {
