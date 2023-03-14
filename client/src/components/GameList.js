@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 
+import React, { useEffect, useState, useRef } from 
 "react"
 import NewGameForm from "./NewGameForm"
 import GameTile from "./GameTile"
@@ -6,6 +6,7 @@ import getCurrentUser from "../services/getCurrentUser"
 import SteamForm from "./SteamForm"
 import TrophyCount from "./TrophyCount"
 import Trophy from "./Trophy"
+import moveComplete from "./MoveComplete"
 
 
 
@@ -24,9 +25,170 @@ const GameList = (props) => {
     const [trophyCount, setTrophyCount] = useState ([0])
     const [images, setImages] = useState([])
     
+    let gameId
     let trophies = 0
 
+    const moveComplete = async () => {
+        try {
+            const response = await fetch(`/api/v1/games/${gameId}/complete`, {
+                method: "PATCH",
+                headers: new Headers({
+                    "Content-Type":"application/json"
+                }),
+                body: JSON.stringify({
+                    progress: "Complete"
+                })
+            })
+            if(!response.ok) {
+                const errorMessage = `${response.status} (${response.statusText})`
+                const error = new Error(errorMessage)
+                throw(error)
+            }
     
+            console.log(games)
+            if (games) {
+    
+                const returnedGames = games.filter(game => game.id !== gameId) 
+
+                let game
+
+                for (let i = 0; i < games.length; i++) {
+                    if (games[i].id == gameId) {
+                        game = games[i]
+                    }
+                } 
+
+                const updatedGame = game
+                updatedGame.progress = "Complete"
+                setGames(
+                    [...returnedGames, updatedGame]
+                )
+            }
+    
+        } catch(err) {
+            console.error(`Error in fetch: ${err.message}`)
+        }
+    }
+
+    const moveInProgress = async () => {
+        try {
+            const response = await fetch(`/api/v1/games/${gameId}/inprogress`, {
+                method: "PATCH",
+                headers: new Headers({
+                    "Content-Type":"application/json"
+                }),
+                body: JSON.stringify({
+                    progress: "In Progress"
+                })
+            })
+            if(!response.ok) {
+                const errorMessage = `${response.status} (${response.statusText})`
+                const error = new Error(errorMessage)
+                throw(error)
+            }
+    
+            console.log(games)
+            if (games) {
+    
+                const returnedGames = games.filter(game => game.id !== gameId) 
+
+                let game
+
+                for (let i = 0; i < games.length; i++) {
+                    if (games[i].id == gameId) {
+                        game = games[i]
+                    }
+                } 
+
+                const updatedGame = game
+                updatedGame.progress = "In Progress"
+                setGames(
+                    [...returnedGames, updatedGame]
+                )
+            }
+    
+        } catch(err) {
+            console.error(`Error in fetch: ${err.message}`)
+        }
+    }
+    
+    const moveNotStarted = async () => {
+        try {
+            const response = await fetch(`/api/v1/games/${gameId}/notstarted`, {
+                method: "PATCH",
+                headers: new Headers({
+                    "Content-Type":"application/json"
+                }),
+                body: JSON.stringify({
+                    progress: "Not Started"
+                })
+            })
+            if(!response.ok) {
+                const errorMessage = `${response.status} (${response.statusText})`
+                const error = new Error(errorMessage)
+                throw(error)
+            }
+    
+            console.log(games)
+            if (games) {
+    
+                const returnedGames = games.filter(game => game.id !== gameId) 
+
+                let game
+
+                for (let i = 0; i < games.length; i++) {
+                    if (games[i].id == gameId) {
+                        game = games[i]
+                    }
+                } 
+
+                const updatedGame = game
+                updatedGame.progress = "Not Started"
+                setGames(
+                    [...returnedGames, updatedGame]
+                )
+            }
+    
+        } catch(err) {
+            console.error(`Error in fetch: ${err.message}`)
+        }
+    }
+
+    const dragItem = useRef();
+    const dragOverItem = useRef();
+
+    const dragStart = (e, position) => {
+        dragItem.current = position;
+        console.log(dragItem.current)
+    }
+
+    const dragEnter = (e, position) => {
+        dragOverItem.current = position;
+        console.log(dragOverItem.current)
+    }
+
+    const drop = (e) => {
+        gameId = dragItem.current
+
+        for (let i = 0; i < games.length; i++) {
+            if (games[i].id == dragOverItem.current) {
+                if (games[i].progress == "Complete") {
+                    moveComplete()
+                }
+                else if (games[i].progress == "In Progress") {
+                    moveInProgress()
+                }
+                else if (games[i].progress == "Not Started") {
+                    moveNotStarted()
+                }
+            }
+
+        }
+
+
+
+        console.log(games)
+    }
     
     if (games) {
         
@@ -84,7 +246,7 @@ const GameList = (props) => {
                 }
                 
                 
-                url = `https://api.scraperapi.com?api_key=9d10a96d51b67b0a5d6486c58373d91c&url=https://www.metacritic.com/search/game/${gameName2}/results`
+                url = `http://api.scraperapi.com?api_key=e0ff4be3d31f20b37e5589c3f01f1418&url=http://www.metacritic.com/search/game/${gameName2}/results`
                 
                 axios(url).then(response => {
                     
@@ -148,7 +310,7 @@ const GameList = (props) => {
                 if(game.progress == "Complete") {
 
                 return (
-                    <div className="callout secondary cell small-12 medium-12 large-12 gameTile">
+                    <div className="callout secondary cell small-12 medium-12 large-12 gameTile" key={game.id} onDragStart={(e) => dragStart(e, game.id)} onDragEnter={(e) => dragEnter(e, game.id)} onDragEnd={drop} draggable>
                     <GameTile
                     key={game.id}
                     setGames={setGames}
@@ -178,7 +340,7 @@ const inProgressGames = games.map((game) => {
         if (game.userID === props.currentUser.id) {
             if(game.progress == "In Progress") {
             return (
-                <div className="callout secondary cell small-12 medium-12 large-12 gameTile">
+                <div className="callout secondary cell small-12 medium-12 large-12 gameTile" key={game.id} onDragStart={(e) => dragStart(e, game.id)} onDragEnter={(e) => dragEnter(e, game.id)} onDragEnd={drop} draggable>
                 <GameTile
                 key={game.id}
                 setGames={setGames}
@@ -204,7 +366,7 @@ const notStartedGames = games.map((game) => {
         if (game.userID === props.currentUser.id) {
             if(game.progress == "Not Started") {
                 return (
-                    <div className="callout secondary cell small-12 medium-12 large-12 gameTile">
+                    <div className="callout secondary cell small-12 medium-12 large-12 gameTile" key={game.id} onDragStart={(e) => dragStart(e, game.id)} onDragEnter={(e) => dragEnter(e, game.id)} onDragEnd={drop} draggable>
                 <GameTile
                 key={game.id}
                 setGames={setGames}
@@ -230,7 +392,7 @@ const steamGames = games.map((game) => {
         if (game.userID === props.currentUser.id) {
             if(game.system == 'Steam') {
             return (
-                <div className="callout secondary cell small-12 medium-12 large-12 gameTile">
+                <div className="callout secondary cell small-12 medium-12 large-12 gameTile" key={game.id} onDragStart={(e) => dragStart(e, game.id)} onDragEnter={(e) => dragEnter(e, game.id)} onDragEnd={drop}  draggable>
                 <GameTile
                 key={game.id}
                 setGames={setGames}
@@ -301,19 +463,7 @@ if (currentUser) {
         }
     }
 }
-}
-
-// let totalTrophyCount = 0
-
-// if (currentUser) {
-
-//     for (let i = 0; i < games.length; i++) {
-//         if (games[i].trophies) {
-//             console.log(games[i].trophies)
-//             totalTrophyCount + games[i].trophies
-//         }
-//     }
-// }
+} 
 
 let steamForm = <SteamForm currentUser={props.currentUser} errors={errors} games={games} setGames={setGames} addGame={addGame}/>
 
@@ -333,7 +483,7 @@ let showTrophyCount
 
             <h3 align="center" className="greeting">Hi {username}, here is your gaming list!</h3>
 
-            <h4 align="center"><Trophy trophies={1} /> {showTrophyCount} </h4>
+            <h4 align="center"> You have {showTrophyCount} trophies! <Trophy trophies={1} /> {showTrophyCount} </h4>
             
 
             <div className="grid-container">

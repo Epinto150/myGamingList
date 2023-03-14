@@ -8,6 +8,7 @@ import RegistrationForm from "./registration/RegistrationForm";
 import SignInForm from "./authentication/SignInForm";
 import TopBar from "./layout/TopBar";
 import HomePage from "./HomePage";
+import LandingPage from "./LandingPage";
 
 
 
@@ -26,6 +27,12 @@ const App = (props) => {
     fetchCurrentUser()
   }, [])
 
+  let homePage = <LandingPage {...props} currentUser={currentUser} />
+
+  if (currentUser) {
+    homePage = <HomePage {...props} currentUser={currentUser} />
+  }
+
   return (
     <Router>
       <TopBar user={currentUser} />
@@ -35,7 +42,7 @@ const App = (props) => {
         </Route> */}
          <Route 
           exact path="/" 
-          render={(props) => <HomePage {...props} currentUser={currentUser} />} 
+          render={(props) => homePage} 
          />
         <Route exact path="/users/new" component={RegistrationForm} />
         <Route exact path="/user-sessions/new" component={SignInForm} />

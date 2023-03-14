@@ -30,9 +30,9 @@ const Steam = (props) => {
 
 
     if (steamID) {
-        const url = `https://api.scraperapi.com?api_key=9d10a96d51b67b0a5d6486c58373d91c&url=https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=38A6570C41BACF954320F6922DA97D9D&steamids=${steamID}`
+        const url = `http://api.scraperapi.com?api_key=e0ff4be3d31f20b37e5589c3f01f1418&url=http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=38A6570C41BACF954320F6922DA97D9D&steamids=${steamID}`
 
-        const gamesDataUrl = `https://api.scraperapi.com?api_key=9d10a96d51b67b0a5d6486c58373d91c&url=http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=38A6570C41BACF954320F6922DA97D9D&steamid=${steamID}`
+        const gamesDataUrl = `http://api.scraperapi.com?api_key=e0ff4be3d31f20b37e5589c3f01f1418&url=http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=38A6570C41BACF954320F6922DA97D9D&steamid=${steamID}`
 
         useEffect(() => {
             getSteamProfile()
