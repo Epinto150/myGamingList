@@ -47,7 +47,11 @@
 
 .border {
   max-height: 500px;
+}
+
+.scroll {
   overflow-y: scroll;
+  max-height: 400px;
 }
 
 .gameTile-Header {

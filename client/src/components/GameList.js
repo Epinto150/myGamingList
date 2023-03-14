@@ -498,7 +498,7 @@ let showTrophyCount
 
                         <h6 className="numberOfGames">-You have {completeGamesLength} completed games-</h6>
                        
-                        <div className="grid-x grid-margin-x">
+                        <div className="grid-x grid-margin-x scroll">
                         {completeGames}
 
                 </div>
@@ -515,7 +515,7 @@ let showTrophyCount
 
                         <h6 className="numberOfGames">-You have {inProgressGamesLength} in-progress games-</h6>
                        
-                        <div className="grid-x grid-margin-x">
+                        <div className="grid-x grid-margin-x scroll">
                         {inProgressGames}
 
                 </div>
@@ -530,7 +530,7 @@ let showTrophyCount
 
                         <h6 className="numberOfGames">-You have {notStartedGamesLength} not started games-</h6>
                        
-                        <div className="grid-x grid-margin-x">
+                        <div className="grid-x grid-margin-x scroll">
                         {notStartedGames}
 
                 </div>
@@ -547,7 +547,9 @@ let showTrophyCount
                     <h4 className="gameTile-Header" align="center">Steam Games</h4>
 
                     <h6 className="numberOfGames" align="center">-You have {steamGamesLength} Steam games-</h6>
+                    <div className="grid-x grid-margin-x scroll">
                 {steamGames}
+                </div>
                 </div>
             </div>
             </div>
