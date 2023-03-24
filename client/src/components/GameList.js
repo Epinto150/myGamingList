@@ -526,7 +526,7 @@ let showTrophyCount
 
             <div className="grid-container border">
                         
-                        <h4 className="gameTile-Header">Not Started</h4>
+                        <h4 className="gameTile-Header">Not Started Games</h4>
 
                         <h6 className="numberOfGames">-You have {notStartedGamesLength} not started games-</h6>
                        
